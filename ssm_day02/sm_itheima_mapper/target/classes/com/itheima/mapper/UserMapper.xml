@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.mapper.UserMapper">
+
+    <select id="login" resultType="user" parameterType="user">
+    select * from user where username=#{username} and  password=#{password}
+    </select>
+
+    <select id="findAll" resultType="user" parameterType="condition">
+    SELECT * from user
+        <where>
+            <if test="name !=null">
+                and name like "%"#{name}"%"
+            </if>
+            <if test=" address !=null">
+                and address like "%"#{address}"%"
+            </if>
+            <if test=" email !=null">
+                and email like "%"#{email}"%"
+            </if>
+        </where>
+        <if test="true">
+            limit #{pageStart},#{rows}
+        </if>
+    </select>
+
+    <insert id="add" parameterType="user">
+        insert into user (id,name,gender,age,address,qq,email,pic)values(id,#{name},#{gender},#{age},#{address},#{qq},#{email},#{pic})
+    </insert>
+
+    <delete id="delUser" parameterType="user">
+        DELETE from user where id = #{id}
+    </delete>
+
+    <select id="findUserById" parameterType="user" resultType="user">
+        SELECT * from user where id = #{id}
+    </select>
+
+    <update id="update" parameterType="user">
+        update user SET gender=#{gender} , age=#{age} ,address=#{address} ,qq=#{qq} ,email = #{email} where id = #{id}
+    </update>
+
+    <select id="findTotalCount" resultType="int" parameterType="user">
+        select count(1) from user
+        <where>
+            <if test=" name !=null">
+                and name like "%"#{name}"%"
+            </if>
+            <if test=" address !=null">
+                and address like "%"#{address}"%"
+            </if>
+            <if test=" email !=null">
+                and email like "%"#{email}"%"
+            </if>
+        </where>
+    </select>
+</mapper>
